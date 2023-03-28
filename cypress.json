@@ -1,0 +1,15 @@
+{
+    "baseUrl": "http://localhost:3001",     
+    "viewportHeight": 1080,    
+    "viewportWidth": 1920,                  
+    "componentFolder": "src",               
+    "failOnStatusCode": true,              
+    "numTestsKeptInMemory":100,             
+    "defaultCommandTimeout": 500,           
+    "reporter": "junit",                    
+    "reporterOptions": {                    
+      "mochaFile": "results/xmls/my-test-output-[hash].xml",
+      "toConsole": true,
+      "outputs":true
+    }
+  }
