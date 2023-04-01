@@ -1,129 +1,105 @@
 import "@progress/kendo-theme-material/dist/all.css";
-import { useState } from "react";
-import ActiveJobs from "./components/ActiveJobs";
-import TotalJobViews from "./components/TotalJobViews";
-import MostPopularJob from "./components/MostPopularJob";
-import JobCredits from "./components/JobCredits";
-import { deletePosition, getPositions, storePosition, updatePosition } from "./ApiInterface";
+import { useEffect, useState } from "react";
+import { deletePositionFromDB, getPositionsFromDB, storePositionToDB, updatePositionFromDB } from "./ApiInterface";
 import NavigationBar from "./components/NavigationBar";
-import Tile from "./Tile";
-import { v4 as uuidv4 } from 'uuid';
-import { isConstValueNode } from "graphql";
-
+import storePositionsToDynomoDB from "./crud_components/StorePositionToDynomoDB";
+import { TileLayout } from "@progress/kendo-react-layout";
+import { storePositionsToLocalStorage } from "./LocalStorage";
+import { getPositionsFromLocalStorage } from "./LocalStorage";
+import GetWidget from "./crud_components/GetWidgets";
 
 const Dashboard = () => {
-  const initialPositions = [
-  ];
+    const initialPositions = [
+    ];
 
-  //method retrieving positions from localstorage
-const getPositionsFromLocalStorage =  initialPositions => {
-  const itemsFromLocalStorage = JSON.parse(localStorage.getItem("dashboard-positions"))
-  if(itemsFromLocalStorage){
-    return itemsFromLocalStorage
-  }
-  return initialPositions
-};
+    const initialWidgets = [
+    ];
 
-const [positions, setPositions] = useState(getPositionsFromLocalStorage(initialPositions))
-const [loading, setLoad] = useState(false)
-  //method to delete widget from state and DB
-const deleteWidget = async (id) => {
-  if(loading == false) {
-    setLoad(true)
-    await deletePosition(id)
-    for (let i = 0; i < widgets.length; i++) {
-      if (widgets[i].id === id) {
-        widgets.splice(i,1)
-      }
+    //setting state for both positions and widgets
+    const [widgets, setWidgets] = useState(initialWidgets);
+    const [positions, setPositions] = useState([initialPositions]);
+
+    useEffect(async () => {
+        await getPositionsFromDb();
+        let positions = await getPositionsFromLocalStorage();
+        let widgets = await convertPositionsToWidgets(positions);
+        setPositions(positions)
+        setWidgets(widgets)
+    }, [])
+
+    // method to retrieving positions from API/DB on render and then store the positions to local cache
+    async function getPositionsFromDb() {
+        const newPositions = await getPositionsFromDB()
+        storePositionsToLocalStorage(newPositions)
     }
-    for (let i = 0; i < positions.length; i++) {
-      if (positions[i].id === id) {
-        positions.splice(i,1)
-        const newPositions = [...positions]
-        const newWidgets = [...widgets]
+
+    const deleteWidget = async (id) =>{
+        deletePositionFromDB(id)
+        let newPositions = await getPositionsFromLocalStorage();
+        let newWidgets = await convertPositionsToWidgets(newPositions);
+        for(let index in newPositions){
+            if(newPositions[index].id === id){
+                newPositions.splice(index, 1)
+            }
+        }
+        for(let index in newWidgets){
+            if(newWidgets[index].id === id){
+                newWidgets.splice(index, 1)
+            }
+        }
         setWidgets(newWidgets)
         setPositions(newPositions)
-        localStorage.setItem("dashboard-positions", JSON.stringify(positions))
-        console.log(widgets)
-      }
+        await storePositionsToLocalStorage(newPositions)
     }
-    setLoad(false)
-  }
-};
 
-const addWidget = async (widget1,position1) => {
-    positions.push(position1)
-    widgets.push(widget1)
-    const newPositions = [...positions]
-    const newWidgets = [...widgets]
-    setWidgets(newWidgets)
-    setPositions(newPositions)
-    localStorage.setItem("dashboard-positions", JSON.stringify(positions))  
-};
-  const initialWidgets = [
-  ];
+    // method to retrieve positions from db
+    async function convertPositionsToWidgets(positions) {
+        let temparray = []
+        for(let i in positions){
+            let widget = GetWidget(positions[i].type, deleteWidget, positions[i].id)
+            temparray.push(widget)
+        }
+        return temparray;
+    }
 
+    //add widget to dashboard while storing widget in database
+    async function addWidget(widget, position) {
+        await storePositionToDB(position)
+        let newPositions = positions.concat([position])
+        let newWidgets = widgets.concat([widget])
+        setPositions(newPositions)
+        setWidgets(newWidgets)
+    }
 
-//method to store positions to localstorage and set state
-const storePositionsToLocalStorage =  (newPositions) => {
-localStorage.setItem("dashboard-positions",JSON.stringify(newPositions));
-setPositions(newPositions)
-}
+    const handleReposition = async e => {
+        await storePositionsToLocalStorage(e.value)
+        await storePositionsToDynomoDB(e.value)
+        setPositions(e.value)
+    }
 
-//setting state for both positions and widgets
-const [widgets, setWidgets] = useState(initialWidgets);
-
-// method to retrieving positions from API/DB and then store the positions
-const getPositionsFromDb = async () =>{
-  const position = await getPositions()
-  const temparray = []
-  position.map( p => {
-    const newarray = {id: p.id, order: parseInt(p.newOrder), col: parseInt(p.col), colSpan: parseInt(p.colSpan), rowSpan: parseInt(p.rowSpan) }
-    temparray.push(newarray)
-  })
-  storePositionsToLocalStorage(temparray)
-}
-
-//method to update positions and store to local storage
-const updatePositions = (position) => {
-  updatePosition(position)
-  getPositionsFromDb()
-}
-
-//storeing positions to DynomoDB then loading stored result
-const storePositionsToDynomoDB = (positions) => {
-  positions.map(async position => {
-     await storePosition(position)
-  })
-  getPositionsFromDb()
-}
-
-//resetting all widgets
-const resetWidgets = () => {
-  setPositions(initialPositions);
-  localStorage.setItem("dashboard-positions",JSON.stringify(initialPositions));
-}
-  
-  return (
-    <div className="flex">
-    <NavigationBar 
-    storePositions = {storePositionsToDynomoDB}
-    addWidget = {addWidget}
-    positions = {positions}
-    deleteWidget = {deleteWidget}
-    widgets = {widgets}/>
-    <Tile
-     resetWidgets = {resetWidgets} 
-     storePositionsToLocalStorage = {storePositionsToLocalStorage}
-     updatePositions = {updatePosition} 
-     getPositionsFromDb = {getPositionsFromDb} 
-     getPositionsFromLocalStorage = {getPositionsFromLocalStorage}  
-     deleteWidget = {deleteWidget}
-     positions = {positions}
-     widgets = {widgets}
-     />
-    </div>
-  );
+    return (
+        <div className="flex">
+            <NavigationBar
+                // storePositions={storePositionsToDynomoDB}
+                addWidget={addWidget}
+                positions={positions}
+                deleteWidget={deleteWidget}
+                widgets={widgets} />
+            <div>
+                <div className="k-display-flex">
+                    <TileLayout
+                        className="tileLayout"
+                        columns={4}
+                        rowHeight={255}
+                        positions={positions}
+                        gap={{ rows: 10, columns: 10 }}
+                        items={widgets}
+                        onReposition={handleReposition}
+                    />
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default Dashboard;

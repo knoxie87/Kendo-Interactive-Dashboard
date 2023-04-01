@@ -1,11 +1,11 @@
 import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
 import { useState } from "react";
-import { storePosition } from "../ApiInterface";
+import { storePositionToDB } from "../ApiInterface";
 
 
-const storePositionsToDynomoDB = (positions) => {
-    positions.map(async position => {
-       await storePosition(position)
+const storePositionsToDynomoDB = async (positions) => {
+    await positions.map( async position => {
+       await storePositionToDB(position)
     })
 }
 export default storePositionsToDynomoDB;

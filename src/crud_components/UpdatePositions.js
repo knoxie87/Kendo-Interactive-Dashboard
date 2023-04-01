@@ -1,6 +1,6 @@
 import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
 import { useState } from "react";
-import { updatePosition } from "../ApiInterface";
+import { updatePositionToDB } from "../ApiInterface";
 
 
 const UpdatePositions = (props) => {
@@ -30,7 +30,7 @@ const UpdatePositions = (props) => {
     }
 
     const updatePositions = () => {
-        updatePosition(position)
+        updatePositionToDB(position)
     }
 
     return (

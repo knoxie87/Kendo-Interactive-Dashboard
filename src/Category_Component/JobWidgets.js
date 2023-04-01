@@ -15,7 +15,7 @@ const JobWidget = (props) => {
                         <div className="relative">
                             <img src = {JobCreditsImage}/>
                             <div className="absolute top-0 right-0 w-4 h-4 bg-blue-300 rounded-full flex justify-center items-center">
-                                <a href="#"><AddWidget id={"JobCredits"} deleteWidget = {props.deleteWidget} addWidget = {props.addWidget} widgets = {props.widgets} storePositionsToLocalStorage = {props.storePositionsToLocalStorage} positions = {props.positions}/></a>
+                                <a href="#"><AddWidget type={"JobCredits"} deleteWidget = {props.deleteWidget} addWidget = {props.addWidget} widgets = {props.widgets} storePositionsToLocalStorage = {props.storePositionsToLocalStorage} positions = {props.positions}/></a>
                             </div>
                         </div>
                     </div>
@@ -24,7 +24,7 @@ const JobWidget = (props) => {
                         <div className="relative">
                             <img src = {MostPopularJobImage}/>
                             <div className="absolute top-0 right-0 w-4 h-4 bg-blue-300 rounded-full flex justify-center items-center">
-                                <a href="#"><AddWidget id={"MostPopularJobs"} deleteWidget = {props.deleteWidget} addWidget = {props.addWidget}  widgets = {props.widgets} storePositionsToLocalStorage = {props.storePositionsToLocalStorage} positions = {props.positions}/></a>
+                                <a href="#"><AddWidget type={"MostPopularJobs"} deleteWidget = {props.deleteWidget} addWidget = {props.addWidget}  widgets = {props.widgets} storePositionsToLocalStorage = {props.storePositionsToLocalStorage} positions = {props.positions}/></a>
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@ const JobWidget = (props) => {
                         <div className="relative">
                             <img src = {ActiveJobImage}/>
                             <div className="absolute top-0 right-0 w-4 h-4 bg-blue-300 rounded-full flex justify-center items-center">
-                                <a href="#"><AddWidget id={"ActiveJobs"} deleteWidget = {props.deleteWidget} addWidget = {props.addWidget} widgets = {props.widgets} storePositionsToLocalStorage = {props.storePositionsToLocalStorage} positions = {props.positions}/></a>
+                                <a href="#"><AddWidget type={"ActiveJobs"} deleteWidget = {props.deleteWidget} addWidget = {props.addWidget} widgets = {props.widgets} storePositionsToLocalStorage = {props.storePositionsToLocalStorage} positions = {props.positions}/></a>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@ const JobWidget = (props) => {
                         <div className="relative">
                             <img src = {TotalJobViewsImage}/>
                             <div className="absolute top-0 right-0 w-4 h-4 bg-blue-300 rounded-full flex justify-center items-center">
-                                <a href="#"><AddWidget id={"TotalJobViews"} deleteWidget = {props.deleteWidget} addWidget = {props.addWidget} widgets = {props.widgets} storePositionsToLocalStorage = {props.storePositionsToLocalStorage} positions = {props.positions}/></a>
+                                <a href="#"><AddWidget type={"TotalJobViews"} deleteWidget = {props.deleteWidget} addWidget = {props.addWidget} widgets = {props.widgets} storePositionsToLocalStorage = {props.storePositionsToLocalStorage} positions = {props.positions}/></a>
                             </div>
                         </div>
                     </div>

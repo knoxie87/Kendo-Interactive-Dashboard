@@ -1,12 +1,13 @@
 
-const getPositions = async () => {
+const getPositionsFromDB = async () => {
     const query = `query getConfiguration {
       getConfiguration {
         id,
         newOrder,
         col,
         rowSpan,
-        colSpan
+        colSpan,
+        type
       }
 }`;
 
@@ -30,14 +31,15 @@ const getPositions = async () => {
       return temporaryconfiguration
   }
 
-  const storePosition = async (positions) => {
-    const query = `mutation createTest($id: String, $newOrder: Int $col: Int, $colSpan: Int, $rowSpan: Int){
-      addConfiguration(id: $id, newOrder: $newOrder, col: $col, colSpan: $colSpan, rowSpan: $rowSpan  ) {
+  const storePositionToDB = async (positions) => {
+    const query = `mutation createTest($id: String, $newOrder: Int $col: Int, $colSpan: Int, $rowSpan: Int, $type: String){
+      addConfiguration(id: $id, newOrder: $newOrder, col: $col, colSpan: $colSpan, rowSpan: $rowSpan, type: $type  ) {
         id,
         newOrder,
         col,
         colSpan,
         rowSpan,
+        type
       }
     }`;
 
@@ -49,7 +51,8 @@ const getPositions = async () => {
         },
         body: JSON.stringify({
             query,
-            variables: { id: positions.id, newOrder: positions.order, col: positions.col, colSpan: positions.colSpan, rowSpan: positions.rowSpan }
+            
+            variables: { id: positions.id, newOrder: positions.order, col: positions.col, colSpan: positions.colSpan, rowSpan: positions.rowSpan, type: positions.type }
         })
     })
         .then(r => r.json())
@@ -63,14 +66,15 @@ const getPositions = async () => {
         return temporaryconfiguration
   }
 
-  const updatePosition = async (configuration) => {
-    const query = `mutation updateTest($id:String, $newOrder: Int,  $col: Int, $colSpan: Int, $rowSpan: Int! ){
-      updateConfiguration(id:$id, newOrder:$newOrder, col: $col, colSpan: $colSpan, rowSpan: $rowSpan ) {
+  const updatePositionToDB = async (configuration) => {
+    const query = `mutation updateTest($id:String, $newOrder: Int,  $col: Int, $colSpan: Int, $rowSpan: Int!, $type: String ){
+      updateConfiguration(id:$id, newOrder:$newOrder, col: $col, colSpan: $colSpan, rowSpan: $rowSpan, type: $type ) {
         id,
         newOrder,
         col,
         colSpan,
-        rowSpan 
+        rowSpan,
+        type
       }
     }`
     const result = await fetch('http://localhost:3000/dev/graphql',{
@@ -81,7 +85,7 @@ const getPositions = async () => {
         },
         body: JSON.stringify({
             query,
-            variables: {id: configuration.id.toString(), newOrder: configuration.order, col: configuration.col, colSpan: configuration.colSpan, rowSpan: configuration.rowSpan}
+            variables: {id: configuration.id.toString(), newOrder: configuration.order, col: configuration.col, colSpan: configuration.colSpan, rowSpan: configuration.rowSpan, type: configuration.type }
         })
     })
     .then(r => r.json())
@@ -98,7 +102,7 @@ const getPositions = async () => {
 }
 
 
-const deletePosition = async (id) => {
+const deletePositionFromDB = async (id) => {
     const query = `mutation deleteConfiguration($id: String){
         deleteConfiguration(id: $id){
           id
@@ -124,7 +128,7 @@ const deletePosition = async (id) => {
     const temporaryconfiguration = await result.data.getConfiguration;
     return temporaryconfiguration
 }
-export {getPositions, updatePosition, storePosition, deletePosition};
+export {getPositionsFromDB, updatePositionToDB, storePositionToDB, deletePositionFromDB};
 
 
 
