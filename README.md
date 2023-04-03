@@ -1,5 +1,5 @@
 # Getting Started with Create React App
-Kendo widget dashboard interacting with firebase using a GraphQL backend API architecture to interact with AWS Dynamo DB. Will be deployed using serverless in the future
+Kendo widget dashboard interacting with GraphQL backend API architecture and storing widget postions to AWS Dynamo DB. Will be deployed using serverless in the future
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
