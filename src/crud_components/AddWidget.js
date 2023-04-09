@@ -1,12 +1,4 @@
-import ActiveJobs from "../components/ActiveJobs";
-import TotalJobViews from "../components/TotalJobViews";
-import MostPopularJob from "../components/MostPopularJob";
-import JobCredits from "../components/JobCredits";
 import { v4 as uuidv4 } from 'uuid';
-import AgeOfEmpires from "../components/AgeOfEmpires";
-import Halo from "../components/Halo";
-import Gwent from "../components/Gwent";
-import AssassinsCreed from "../components/AssassinsCreed";
 import GetWidget from "./GetWidgets";
 
 const AddWidget = (props) => {

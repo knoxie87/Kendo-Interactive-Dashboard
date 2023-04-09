@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import {deletePosition, getPositions} from "../ApiInterface"
-import storePositionsToDynomoDB from "./StorePositionToDynomoDB";
 
 const DeletePositions = (props) => {
     async function removePosition(id) {
