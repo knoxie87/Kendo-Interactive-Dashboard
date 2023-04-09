@@ -28,7 +28,6 @@ const GameWidgets = (props) => {
                         </div>
                     </div>
             </div>
-
             <div className="flex flex-col ml-2 mr-2">
                     <div className="mb-2">
                         <h3 className="flex">Age Of Empires</h3>

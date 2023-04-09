@@ -22,12 +22,14 @@ const jobViews = [
 ];
 
 //mapping out each job within object to be displayed on template
-const TotalJobViews = props => {
+const TotalJobViews = (props) => {
   return (
     <div>
-          <div className="absolute h-5 w-5 mt-0 top-0 right-0 mr-0 self-end bg-blue-300 flex justify-center rounded-full">
-            <a href="#" onClick={() => props.deleteWidget(props.id)} >X</a>
-          </div>
+      <div className="absolute h-5 w-5 mt-0 top-0 right-0 mr-0 self-end bg-blue-300 flex justify-center rounded-full">
+        <a href="#" onClick={() => props.deleteWidget(props.id)}>
+          X
+        </a>
+      </div>
       <div>
         <ul className="grid grid-cols-2 gap-8 p-0">
           {jobViews.map((job) => {

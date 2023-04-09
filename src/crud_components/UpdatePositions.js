@@ -1,10 +1,8 @@
-import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
 import { useState } from "react";
 import { updatePositionToDB } from "../ApiInterface";
 
 
 const UpdatePositions = (props) => {
-
     const [position, setPositions] = useState([{
         id:"",
         order:"",

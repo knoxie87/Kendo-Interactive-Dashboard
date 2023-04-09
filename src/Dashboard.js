@@ -33,6 +33,7 @@ const Dashboard = () => {
         storePositionsToLocalStorage(newPositions)
     }
 
+    // method to delete widget from dashboard and dynomodb database
     const deleteWidget = async (id) =>{
         deletePositionFromDB(id)
         let newPositions = await getPositionsFromLocalStorage();
@@ -52,7 +53,7 @@ const Dashboard = () => {
         await storePositionsToLocalStorage(newPositions)
     }
 
-    // method to retrieve positions from db
+    // method to retrieve widgets element markup based on position type.
     async function convertPositionsToWidgets(positions) {
         let temparray = []
         for(let i in positions){
@@ -71,6 +72,7 @@ const Dashboard = () => {
         setWidgets(newWidgets)
     }
 
+    // method to handle to store widget positions to local cache storage and backend database storage
     const handleReposition = async e => {
         await storePositionsToLocalStorage(e.value)
         await storePositionsToDynomoDB(e.value)
@@ -80,7 +82,6 @@ const Dashboard = () => {
     return (
         <div className="flex">
             <NavigationBar
-                // storePositions={storePositionsToDynomoDB}
                 addWidget={addWidget}
                 positions={positions}
                 deleteWidget={deleteWidget}
