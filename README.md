@@ -1,5 +1,5 @@
 # Getting Started with Create React App
-Kendo widget dashboard interacting with GraphQL backend API architecture and storing widget postions to an AWS Dynamo DB
+Kendo widget dashboard interacting with GraphQL backend API architecture and storing widget postions to an AWS Dynamo DB.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
