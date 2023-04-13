@@ -2,6 +2,8 @@
 
 Kendo widget dashboard interacting with GraphQL backend API architecture and storing widget postions to an AWS Dynamo DB.
 
+To view backend architecture access the following link https://github.com/knoxie87/Serverless-GraphQL-API 
+
 ## Available Scripts
 
 In the project directory, you can run:
